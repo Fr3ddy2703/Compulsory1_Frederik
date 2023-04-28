@@ -82,7 +82,6 @@ void ABall::BeginPlay()
 	{
 		Spheres[i]->SetMaterial(0, White);
 	}
-	GameOver = false;
 }
 
 // Called every frame
@@ -112,6 +111,8 @@ void ABall::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 // PlayerTurns
 void ABall::TurnController(int SphereIndex)
 {
+	if(!GameOver)
+	{
 	if(SphereStatus[SphereIndex] == true)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("This ball is taken"));
@@ -134,7 +135,7 @@ void ABall::TurnController(int SphereIndex)
 	SphereStatus[SphereIndex] = true;
 	TurnCounter++;
 	WinCondition();
-
+	}
 }
 
 void ABall::WinCondition()
@@ -156,7 +157,12 @@ void ABall::WinCondition()
 	else if(Row1 == -3 || Row2 == -3 || Row3 == -3 || Row4 == -3 || Row5 == -3 || Row6 == -3 || Row7 == -3 || Row8 == -3)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Red win"));
-		GameOver = true;	
+		GameOver = true;
+	}
+	else if(TurnCounter >= 9 && !GameOver)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("Draw"));
+		GameOver = true;
 	}
 }
 
